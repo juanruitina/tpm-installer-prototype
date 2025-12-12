@@ -1,0 +1,162 @@
+Error-kind,Action,Sorting,OWNER,Likelihood,Destructive,Action name,Action description,Action caveats,Action label,Description from code (parsed with Gemini),"ERROR STRING (Juan, unreviewed)",TRANSLATABLE USER OPTIONS  (from doc),Notes
+ErrorKindPreOSDigestVerificationDetected,(implicit),59,Installer,,,,,,,#N/A,,,
+ErrorKindRunningInVM,(implicit),49,Installer,,,,,,,#N/A,,,
+ErrorKindSysPrepApplicationsPresent,(implicit),55,Installer,,,,,,,#N/A,,,
+ErrorKindTPMStartupLocalityNotProtected,(implicit),51,Installer,,,,,,,#N/A,,,
+ErrorKindVARSuppliedDriversPresent,(implicit),53,Installer,,,,,,,#N/A,,,
+ErrorKindWeakSecureBootAlgorithmsDetected,(implicit),57,Installer,,,,,,,#N/A,,,
+ErrorKindActionFailed,(no action),8,Installer,,,,,,,#N/A,,"Return to return to encryption and file system menu.
+
+(Installer should return to encryption and file system menu",
+ErrorKindInternal,(no action),4,Installer,,,,,,,#N/A,,"Return to return to encryption and file system menu.
+
+(Installer should return to encryption and file system menu",
+ErrorKindInvalidArgument,(no action),7,Installer,,,,,,,#N/A,,"Return to return to encryption and file system menu.
+
+(Installer should return to encryption and file system menu",
+ErrorKindInvalidTPMResponse,(no action),12,Installer,,,,,,,#N/A,,"Return to return to encryption and file system menu.
+
+(Installer should return to return to encryption and file system menu)",
+ErrorKindMeasuredBoot,(no action),10,Installer,,,,,,,#N/A,,"Return to return to encryption and file system menu.
+
+(Installer should return to encryption and file system menu",
+ErrorKindMissingArgument,(no action),6,Installer,,,,,,,#N/A,,"Return to return to encryption and file system menu.
+
+(Installer should return to encryption and file system menu",
+ErrorKindSystemNotEFI,(no action),9,Installer,,,,,,,#N/A,,"Return to return to encryption and file system menu.
+
+(Installer should return to encryption and file system menu",
+ErrorKindTPMCommandFailed,(no action),11,Installer,,,,,,,#N/A,,"Return to return to encryption and file system menu.
+
+(Installer should return to encryption and file system menu)",
+ErrorKindUnexpectedAction,(no action),5,Installer,,,,,,,#N/A,,"Return to return to encryption and file system menu.
+
+(Installer should return to encryption and file system menu",
+ErrorKindInsufficientTPMStorage,ActionClearTPMViaFirmware,29,Secboot,,Yes,Clear TPM on restart,,You may be asked to confirm this action on restart.,Restart and clear TPM,"Clear the TPM via the physical presence interface. If successful, this action will respond with ErrorKindShutdown or ErrorKindReboot.",There is an issue with this computer's TPM. ,Clear the TPM via the PPI,
+ErrorKindTPMDeviceLockoutLockedOut,ActionClearTPMViaFirmware,26,Secboot,,Yes,Clear TPM on restart,,You may be asked to confirm this action on restart.,Restart and clear TPM,"Clear the TPM via the physical presence interface. If successful, this action will respond with ErrorKindShutdown or ErrorKindReboot.",There is an issue with this computer's TPM. ,Clear the TPM via the PPI.,
+ErrorKindTPMHierarchiesOwned,ActionClearTPMViaFirmware,23,Secboot,,Yes,Clear TPM on restart,,You may be asked to confirm this action on restart.,Restart and clear TPM,"Clear the TPM via the physical presence interface. If successful, this action will respond with ErrorKindShutdown or ErrorKindReboot.",There is an issue with this computer's TPM. ,Clear the TPM via the PPI.,
+ErrorKindEFIVariableAccess,ActionContactOEM,16,Installer,,No,,,,,Hint that the user should contact the OEM for the device because of a bug in the platform. It is a pseudo-action and cannot be performed by this package.,Hardware-backed encryption is not available in this computer.,"I will contact the OEM for assistance. Return to return to encryption and file system menu.
+
+(Installer should return to encryption and file system menu)",
+ErrorKindTPMDeviceFailure,ActionContactOEM,18,Installer,,No,,,,,Hint that the user should contact the OEM for the device because of a bug in the platform. It is a pseudo-action and cannot be performed by this package.,There is an issue with this computer's TPM. ,"I will contact the OEM for assistance. Return to return to encryption and file system menu.
+
+(Installer should return to encryption and file system menu)",
+ErrorKindAbsolutePresent,"ActionContactOEM
+
+(unrecoverable)",46,Installer,,No,,,,,#N/A,?,"I will contact the OEM for assistance. Return to return to encryption and file system menu.
+
+(Installer should return to encryption and file system menu)",
+ErrorKindEmptyPCRBanks,"ActionContactOEM
+
+(unrecoverable)",33,Installer,,No,,,,,#N/A,There is an issue with this computer's TPM. ,"I will contact the OEM for assistance. Return to return to encryption and file system menu.
+
+(Installer should return to encryption and file system menu)",
+ErrorKindHostSecurity,"ActionContactOEM
+
+(unrecoverable)",42,Installer,,No,,,, ,#N/A,?,"I will contact the OEM for assistance. Return to return to encryption and file system menu.
+
+(Installer should return to encryption and file system menu)",
+ErrorKindInsufficientDMAProtection,"ActionContactOEM
+
+(unrecoverable)",36,Installer,,No,,,,,#N/A,This computer has insufficient DMA protection set up.,"I will contact the OEM for assistance. Return to return to encryption and file system menu.
+
+(Installer should return to encryption and file system menu)",
+ErrorKindNoSuitablePCRBank,"ActionContactOEM
+
+(unrecoverable)",32,Installer,,No,,,,,#N/A,There is an issue with this computer's TPM. ,"I will contact the OEM for assistance. Return to return to encryption and file system menu.
+
+(Installer should return to encryption and file system menu)",
+ErrorKindPCRUnusable,"ActionContactOEM
+
+(unrecoverable)",43,Installer,,No,,,,     ,#N/A,There is an issue with this computer's TPM. ,"I will contact the OEM for assistance. Return to return to encryption and file system menu.
+
+(Installer should return to encryption and file system menu)",
+ErrorKindUEFIDebuggingEnabled,"ActionContactOEM
+
+(unrecoverable)",35,Installer,,No,,,,,#N/A,?,"I will contact the OEM for assistance. Return to return to encryption and file system menu.
+
+(Installer should return to encryption and file system menu)",
+ErrorKindNoKernelIOMMU,"ActionContactOSVendor
+
+(unrecoverable)",40,Installer,,No,,,,,#N/A,?,"I will contact Canonical for assistance. Return to return to encryption and file system menu
+
+<link to documentation>
+
+(Installer should return to encryption and file system menu)",
+ErrorKindInsufficientTPMStorage,ActionEnableAndClearTPMViaFirmware,30,,,Yes,Enable and clear TPM on restart,,You may be asked to confirm this action on restart.,Restart and clear TPM,"Enable and clear the TPM via the physical presence interface. If successful, this action will respond with ErrorKindShutdown or ErrorKindReboot.",There is an issue with this computer's TPM. ,Enable and clear the TPM via the PPI.,
+ErrorKindTPMDeviceDisabled,ActionEnableAndClearTPMViaFirmware,21,Secboot,,Yes,Enable and clear TPM on restart,,You may be asked to confirm this action on restart.,Restart and clear TPM,"Enable and clear the TPM via the physical presence interface. If successful, this action will respond with ErrorKindShutdown or ErrorKindReboot.",This computer's TPM is disabled.,Enable and clear the TPM via the PPI.,
+ErrorKindTPMDeviceLockoutLockedOut,ActionEnableAndClearTPMViaFirmware,27,Secboot,,Yes,Enable and clear TPM on restart,,You may be asked to confirm this action on restart.,Restart and clear TPM,"Enable and clear the TPM via the physical presence interface. If successful, this action will respond with ErrorKindShutdown or ErrorKindReboot.",There is an issue with this computer's TPM. ,Enable and clear the TPM via the PPI.,
+ErrorKindTPMHierarchiesOwned,ActionEnableAndClearTPMViaFirmware,24,Secboot,,Yes,Enable and clear TPM on restart,,You may be asked to confirm this action on restart.,Restart and clear TPM,"Enable and clear the TPM via the physical presence interface. If successful, this action will respond with ErrorKindShutdown or ErrorKindReboot.",There is an issue with this computer's TPM. ,Enable and clear the TPM via the PPI.,
+ErrorKindTPMDeviceDisabled,ActionEnableTPMViaFirmware,20,Secboot,,No?,Enable TPM on restart,,You may be asked to confirm this action on restart.,Restart and enable TPM,"Enable the TPM via the physical presence interface. If successful, this action will respond with ErrorKindShutdown or ErrorKindReboot.",This computer's TPM is disabled.,Enable the TPM via the PPI.,
+N/A,ActionNone,13,Secboot,,,,,,,No action.,#N/A,N/A,
+ErrorKindAbsolutePresent,ActionProceed,45,Secboot,,Unclear,,Ignoring this may result in [Explain risk],,Ignore,"Turn on the appropriate CheckFlags so that the corresponding errors are ignored. If multiple errors are returned with this action in a single call, then calling RunChecksContext.Run with it will result in all of those errors being ignored if no argument is supplied.",?,I understand the risk and choose to ignore the error.,
+ErrorKindEmptyPCRBanks,ActionProceed,34,Secboot,,Unclear,,Ignoring this may result in [Explain risk],,Ignore,"Turn on the appropriate CheckFlags so that the corresponding errors are ignored. If multiple errors are returned with this action in a single call, then calling RunChecksContext.Run with it will result in all of those errors being ignored if no argument is supplied.",There is an issue with this computer's TPM. ,I understand the risk and choose to ignore the error.,
+ErrorKindInsufficientDMAProtection,ActionProceed,38,Secboot,,Unclear,,Ignoring this may result in [Explain risk],,Ignore,"Turn on the appropriate CheckFlags so that the corresponding errors are ignored. If multiple errors are returned with this action in a single call, then calling RunChecksContext.Run with it will result in all of those errors being ignored if no argument is supplied.",This computer has insufficient DMA protection set up.,I understand the risk and choose to ignore the error.,
+ErrorKindNoKernelIOMMU,ActionProceed,41,Secboot,,Unclear,,Ignoring this may result in [Explain risk],,Ignore,"Turn on the appropriate CheckFlags so that the corresponding errors are ignored. If multiple errors are returned with this action in a single call, then calling RunChecksContext.Run with it will result in all of those errors being ignored if no argument is supplied.",?,I understand the risk and choose to ignore the error.,
+ErrorKindPreOSDigestVerificationDetected,ActionProceed,58,Secboot,,Unclear,,Ignoring this may result in [Explain risk],,Ignore,"Turn on the appropriate CheckFlags so that the corresponding errors are ignored. If multiple errors are returned with this action in a single call, then calling RunChecksContext.Run with it will result in all of those errors being ignored if no argument is supplied.",,I understand the risk and choose to ignore the error.,
+ErrorKindRunningInVM,ActionProceed,48,Secboot,,Unclear,,Ignoring this may result in [Explain risk],,Ignore,"Turn on the appropriate CheckFlags so that the corresponding errors are ignored. If multiple errors are returned with this action in a single call, then calling RunChecksContext.Run with it will result in all of those errors being ignored if no argument is supplied.",,I understand the risk and choose to ignore the error.,
+ErrorKindSysPrepApplicationsPresent,ActionProceed,54,Secboot,,Unclear,,Ignoring this may result in [Explain risk],,Ignore,"Turn on the appropriate CheckFlags so that the corresponding errors are ignored. If multiple errors are returned with this action in a single call, then calling RunChecksContext.Run with it will result in all of those errors being ignored if no argument is supplied.",,I understand the risk and choose to ignore the error.,
+ErrorKindTPMStartupLocalityNotProtected,ActionProceed,50,Secboot,,Unclear,,Ignoring this may result in [Explain risk],,Ignore,"Turn on the appropriate CheckFlags so that the corresponding errors are ignored. If multiple errors are returned with this action in a single call, then calling RunChecksContext.Run with it will result in all of those errors being ignored if no argument is supplied.",,I understand the risk and choose to ignore the error.,
+ErrorKindVARSuppliedDriversPresent,ActionProceed,52,Secboot,,Unclear,,Ignoring this may result in [Explain risk],,Ignore,"Turn on the appropriate CheckFlags so that the corresponding errors are ignored. If multiple errors are returned with this action in a single call, then calling RunChecksContext.Run with it will result in all of those errors being ignored if no argument is supplied.",,I understand the risk and choose to ignore the error.,
+ErrorKindWeakSecureBootAlgorithmsDetected,ActionProceed,56,Secboot,,Unclear,,Ignoring this may result in [Explain risk],,Ignore,"Turn on the appropriate CheckFlags so that the corresponding errors are ignored. If multiple errors are returned with this action in a single call, then calling RunChecksContext.Run with it will result in all of those errors being ignored if no argument is supplied.",,I understand the risk and choose to ignore the error.,
+ErrorKindRebootRequired,ActionReboot,15,Installer,,No,Restart,Restart the computer to complete previous actions.,You will then have to retry installation from scratch.,Restart,Rebooting the device. Note that this is a pseudo-action. It cannot be performed by this package - the caller should trigger the reboot.,,"Reboot to complete the previous action.
+
+(Installer should reboot)",
+ErrorKindTPMDeviceFailure,ActionReboot,17,Installer,,No,Restart,Restarting the computer may fix it.,You will then have to retry installation from scratch.,Restart,Rebooting the device. Note that this is a pseudo-action. It cannot be performed by this package - the caller should trigger the reboot.,There is an issue with this computer's TPM. ,"Reboot to see if that clears the failure.
+
+(Installer should reboot)",
+ErrorKindAbsolutePresent,ActionRebootToFWSettings,44,,,?,?,You can do this in you computer's firmware settings.,You will then have to retry installation from scratch.,Restart,Rebooting the device to the firmware settings in order to resolve a problem manually. Note that this is a pseudo-action. It cannot be performed by this package - the caller should trigger the reboot to FW settings.,?,"I will manually disable Absolute using the firmware settings UI. Reboot now.
+
+<link to documentation>
+
+(Installer should reboot)",
+ErrorKindInsufficientDMAProtection,ActionRebootToFWSettings,37,Manual,,No?,Enable DMA protection manually,You can do this in you computer's firmware settings.,You will then have to retry installation from scratch.,Restart,Rebooting the device to the firmware settings in order to resolve a problem manually. Note that this is a pseudo-action. It cannot be performed by this package - the caller should trigger the reboot to FW settings.,This computer has insufficient DMA protection set up.,"I will manually enable DMA protection using the firmware settings UI. Reboot now.
+
+<link to documentation>
+
+(Installer should reboot)",
+ErrorKindInsufficientTPMStorage,ActionRebootToFWSettings,28,Manual,,Yes,Clear TPM manually,You can do this in you computer's firmware settings.,You will then have to retry installation from scratch.,Restart,Rebooting the device to the firmware settings in order to resolve a problem manually. Note that this is a pseudo-action. It cannot be performed by this package - the caller should trigger the reboot to FW settings.,There is an issue with this computer's TPM. ,"I will manually clear the TPM using the firmware settings UI. Reboot now.
+
+<link to documentation>
+
+(Installer should reboot)",
+ErrorKindInvalidSecureBootMode,ActionRebootToFWSettings,47,Manual,,No?,Enable secure boot manually,You can do this in you computer's firmware settings.,You will then have to retry installation from scratch.,Restart,Rebooting the device to the firmware settings in order to resolve a problem manually. Note that this is a pseudo-action. It cannot be performed by this package - the caller should trigger the reboot to FW settings.,Secure boot is disabled in this computer.,"I will manually configure secure boot using the firmware settings UI. Reboot now.
+
+<link to documentation>
+
+(Installer should reboot)",
+ErrorKindNoKernelIOMMU,ActionRebootToFWSettings,39,Manual,,No?,Enable DMA protection manually,You can do this in you computer's firmware settings.,You will then have to retry installation from scratch.,Restart,Rebooting the device to the firmware settings in order to resolve a problem manually. Note that this is a pseudo-action. It cannot be performed by this package - the caller should trigger the reboot to FW settings.,?,"I will manually enable DMA protection using the firmware settings UI. Reboot now.
+
+<link to documentation>
+
+(Installer should reboot)",
+ErrorKindNoSuitablePCRBank,ActionRebootToFWSettings,31,Manual,,No?,Enable PCR banks manually,You can do this in you computer's firmware settings.,You will then have to retry installation from scratch.,Restart,Rebooting the device to the firmware settings in order to resolve a problem manually. Note that this is a pseudo-action. It cannot be performed by this package - the caller should trigger the reboot to FW settings.,There is an issue with this computer's TPM. ,"I will manually enable other PCR banks using the firmware settings UI. Reboot now.
+
+<link to documentation>
+
+(Installer should reboot)",
+ErrorKindTPMDeviceDisabled,ActionRebootToFWSettings,19,Manual,,No?,Enable TPM manually,You can do this in you computer's firmware settings.,You will then have to retry installation from scratch.,Restart,Rebooting the device to the firmware settings in order to resolve a problem manually. Note that this is a pseudo-action. It cannot be performed by this package - the caller should trigger the reboot to FW settings.,This computer's TPM is disabled.,"I will manually enable the TPM using the firmware settings. Reboot now.
+
+<link to documentation>
+
+(Installer should reboot)",Show instructions from documentation with QR code?
+ErrorKindTPMDeviceLockoutLockedOut,ActionRebootToFWSettings,25,Manual,,Yes,Clear TPM manually,You can do this in you computer's firmware settings.,You will then have to retry installation from scratch.,Restart,Rebooting the device to the firmware settings in order to resolve a problem manually. Note that this is a pseudo-action. It cannot be performed by this package - the caller should trigger the reboot to FW settings.,There is an issue with this computer's TPM. ,"I will manually clear the TPM using the firmware settings UI. Reboot now.
+
+<link to documentation>
+
+(Installer should reboot)",
+ErrorKindTPMHierarchiesOwned,ActionRebootToFWSettings,22,Manual,,Yes,Enable and clear TPM manually,You can do this in you computer's firmware settings.,You will then have to retry installation from scratch.,Restart,Rebooting the device to the firmware settings in order to resolve a problem manually. Note that this is a pseudo-action. It cannot be performed by this package - the caller should trigger the reboot to FW settings.,There is an issue with this computer's TPM. ,"I will manually clear the TPM using the firmware settings UI. Reboot now.
+
+<link to documentation>
+
+(Installer should reboot)",
+ErrorKindShutdownRequired,ActionShutdown,14,Manual,,No,Power off,Power off the computer to complete previous actions.,You will then have to retry installation from scratch.,Power off,Shutting down the device. Note that this is a pseudo-action. It cannot be performed by this package - the caller should trigger the shutdown.,,"Shutdown to complete a previous action. I will manually power up after shutdown completes.
+
+(Installer should shutdown)",
+NONE,N/A,1,Installer,,,,,,,#N/A,Hardware-backed encryption is not available,"Return to return to encryption and file system menu.
+
+(Installer should return to encryption and file system menu", (unavailable-reason not empty and availability-check-errors empty)
+UNKNOWN,N/A,2,Installer,,,,,,,#N/A,,"Return to return to encryption and file system menu.
+
+(Installer should return to encryption and file system menu",
+ANY,UNKNOWN,3,Installer,,,,,,,#N/A,,(Installer should Ignore unknown actions),

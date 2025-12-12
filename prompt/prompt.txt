@@ -1,0 +1,7 @@
+Come up with an HTML prototype for testing the design in prompt/page.png. Prototype can use Tailwind, but should be vanilla HTML and JS.
+
+Use the logic in prompt/logic.md. A complex example of the accordion item is in prompt/solution.png, it includes warnings and checkbox.
+
+Add a selector to choose error type and vendor. Error types are listed in prompt/errors.csv. The associated action types are listed in prompt/actions.csv. Both sheets contain the values that should be filled in the prototype dynamically.
+
+Save the code in index.html

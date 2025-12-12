@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TPM Installer Prototype</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .accordion-item[open] .chevron { transform: rotate(180deg); }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <div class="max-w-4xl mx-auto p-6">
+    <header class="mb-6">
+      <h1 class="text-2xl font-semibold">Hardware-backed Encryption Availability</h1>
+      <p class="text-sm">Prototype UI driven by CSV + logic.md</p>
+    </header>
+
+    <!-- Controls -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div>
+        <label for="errorKind" class="block text-sm font-medium mb-1">Error type</label>
+        <select id="errorKind" class="w-full rounded border-gray-300"></select>
+      </div>
+      <div>
+        <label for="vendor" class="block text-sm font-medium mb-1">Device vendor</label>
+        <select id="vendor" class="w-full rounded border-gray-300">
+          <option value="Dell">Dell</option>
+          <option value="Lenovo">Lenovo</option>
+          <option value="HP">HP</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Error description + helper text per logic -->
+    <section class="mt-12 mb-4" id="errorSummary">
+      <div class="">
+        <div class="flex items-start gap-3">
+          <div class="mt-1">
+            <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a1 1 0 01.894.553l7 14A1 1 0 0117 18H3a1 1 0 01-.894-1.447l7-14A1 1 0 0110 2zm0 4a1 1 0 00-1 1v4a1 1 0 102 0V7a1 1 0 00-1-1zm0 8a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"/></svg>
+          </div>
+          <div>
+            <h2 class="font-medium" id="errorTitle">Hardware-backed encryption could not be enabled</h2>
+            <p class="text-sm" id="errorDescription"></p>
+            <p class="text-sm mt-2" id="helperText"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Solutions accordion -->
+    <section class="mb-6" id="solutions"></section>
+
+    <!-- Technical details accordion stub -->
+    <section>
+      <details class="accordion-item bg-white rounded border">
+        <summary class="flex items-center justify-between p-4 cursor-pointer">
+          <span class="font-medium">Technical details</span>
+          <svg class="chevron w-4 h-4 transition-transform" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 011.08 1.04l-4.25 4.25a.75.75 0 01-1.06 0L5.25 8.27a.75.75 0 01-.02-1.06z"/></svg>
+        </summary>
+        <div class="p-4 text-sm" id="techDetails">
+          Data sourced from `prompt/errors.csv` and `prompt/actions.csv`.
+        </div>
+      </details>
+    </section>
+  </div>
+
+  <script>
+    // Vendor simulator: derived from URL (?vendor=Dell|Lenovo|HP|Other) or defaults to Other
+    function getVendorFromURL() {
+      try {
+        const params = new URLSearchParams(location.search);
+        const v = (params.get('vendor') || '').toLowerCase();
+        if (['dell','lenovo','hp','other'].includes(v)) {
+          return v.charAt(0).toUpperCase() + v.slice(1);
+        }
+      } catch (_) {}
+      return 'Other';
+    }
+
+    let currentVendor = getVendorFromURL();
+    // Load CSVs from files (no inline fallback)
+    let errors = [];
+    let actions = [];
+
+    function parseCSV(text) {
+      const lines = text.trim().split(/\r?\n/);
+      const headers = lines[0].split(",");
+      return lines.slice(1).map(line => {
+        const cols = [];
+        let current = '';
+        let inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+          const ch = line[i];
+          if (ch === '"') {
+            inQuotes = !inQuotes;
+          } else if (ch === ',' && !inQuotes) {
+            cols.push(current);
+            current = '';
+          } else {
+            current += ch;
+          }
+        }
+        cols.push(current);
+        const obj = {};
+        headers.forEach((h, idx) => obj[h] = (cols[idx] || '').trim());
+        return obj;
+      });
+    }
+
+    async function loadCSVs() {
+      try {
+        const [errorsText, actionsText] = await Promise.all([
+          fetch('prompt/errors.csv', { cache: 'no-store' }).then(r => { if (!r.ok) throw new Error('errors.csv'); return r.text(); }),
+          fetch('prompt/actions.csv', { cache: 'no-store' }).then(r => { if (!r.ok) throw new Error('actions.csv'); return r.text(); }),
+        ]);
+        errors = parseCSV(errorsText);
+        actions = parseCSV(actionsText);
+        initErrorKinds();
+        render();
+      } catch (err) {
+        inlineError(`Failed to load CSV data: ${err.message || err}`);
+      }
+    }
+
+    const errorKindEl = document.getElementById('errorKind');
+    const vendorEl = document.getElementById('vendor');
+    const errorTitleEl = document.getElementById('errorTitle');
+    const errorDescEl = document.getElementById('errorDescription');
+    const helperTextEl = document.getElementById('helperText');
+    const solutionsEl = document.getElementById('solutions');
+    const techDetailsEl = document.getElementById('techDetails');
+
+    // Populate error selector
+    function initErrorKinds() {
+      const kinds = errors.map(e => e['Error-kind']).filter(k => k);
+      kinds.forEach(k => {
+        const opt = document.createElement('option');
+        opt.value = k;
+        opt.textContent = k;
+        errorKindEl.appendChild(opt);
+      });
+      errorKindEl.value = kinds.includes('ErrorKindTPMDeviceDisabled') ? 'ErrorKindTPMDeviceDisabled' : kinds[0];
+    }
+
+    function firmwareKeyHint(vendor) {
+        switch (vendor) {
+          case 'Dell':
+            return 'F2 or Fn+F2 on Dell computers';
+          case 'Lenovo':
+            return 'F2, Fn+F2, F1 or Enter then F1 on Lenovo computers';
+          case 'HP':
+            return 'F10 or Esc then F10 on HP computers';
+          default:
+            return 'commonly F2, F10 or Delete';
+        }
+      }
+    
+    function firmwareInstructions(vendor) {
+        return `If settings do not load automatically, restart again and press the settings key repeatedly during startup (${firmwareKeyHint(vendor)}).`;
+    }
+
+    function render() {
+      const kind = errorKindEl.value;
+      const errRow = errors.find(e => e['Error-kind'] === kind);
+      const errDesc = (errRow && (errRow['Error description'] || errRow['API message (by Ernest)'])) || 'Unknown error.';
+
+      // errorTitleEl.textContent = kind;
+      errorDescEl.textContent = errDesc;
+
+      // Determine helper text per logic
+      const relatedActions = actions.filter(a => a['Error-kind'] === kind);
+      const actionable = relatedActions.some(a => a.Action && !/ActionContactOEM|ActionContactOSVendor|\(implicit\)|\(no action\)/.test(a.Action));
+      helperTextEl.textContent = actionable
+        ? 'Try the solutions below, contact IT support, or choose a different encryption method.'
+        : 'Contact IT support, or choose a different encryption method.';
+
+      // Build accordion of actions (excluding contact OEM/OS vendor, implicit, no action)
+      const actionableList = relatedActions
+        .filter(a => a.Action && !/ActionContactOEM|ActionContactOSVendor|\(implicit\)|\(no action\)/.test(a.Action))
+        .sort((a, b) => Number(a.Sorting || 0) - Number(b.Sorting || 0));
+
+      solutionsEl.innerHTML = '';
+      if (actionableList.length) {
+        actionableList.forEach((a, idx) => {
+          const numberLabel = idx + 1;
+          const title = `Solution ${numberLabel}: ${a['Action name'] || a.Action}`;
+          const description = [a['Action description']].filter(Boolean).join(' ');
+          const caveats = a['Action caveats'];
+          const label = a['Action label'] || 'Proceed';
+          const isDestructive = /Yes/i.test(a.Destructive) || /Clear TPM/i.test(a['Action name'] || '') || /Clear TPM/i.test(description);
+
+          const detailsEl = document.createElement('details');
+          detailsEl.className = 'accordion-item bg-white rounded border mb-2';
+
+          const summaryEl = document.createElement('summary');
+          summaryEl.className = 'flex items-center justify-between p-4 cursor-pointer';
+          summaryEl.innerHTML = `<span class="font-medium">${title}</span>
+            <svg class="chevron w-4 h-4 transition-transform" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 011.08 1.04l-4.25 4.25a.75.75 0 01-1.06 0L5.25 8.27a.75.75 0 01-.02-1.06z"/></svg>`;
+
+          const contentEl = document.createElement('div');
+          contentEl.className = 'p-4 space-y-3';
+
+          const descP = document.createElement('p');
+          descP.className = 'text-sm';
+          descP.textContent = `${description}${caveats ? ' ' + caveats : ''}`;
+          contentEl.appendChild(descP);
+
+          // Firmware instructions for ActionRebootToFWSettings
+          if (/ActionRebootToFWSettings/.test(a.Action)) {
+            const fw = document.createElement('div');
+            fw.className = 'text-sm';
+            fw.textContent = firmwareInstructions(currentVendor);
+            contentEl.appendChild(fw);
+          }
+
+          // Warning + checkbox for destructive/TPM clear
+          let checkboxId = `ack-${kind}-${idx}`;
+          let needsAck = isDestructive;
+          if (needsAck) {
+            const warn = document.createElement('div');
+            warn.className = 'flex items-start gap-3 bg-amber-50 border border-amber-200 rounded p-3';
+            warn.innerHTML = `
+              <svg class="w-5 h-5 mt-0.5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a1 1 0 01.894.553l7 14A1 1 0 0117 18H3a1 1 0 01-.894-1.447l7-14A1 1 0 0110 2zm0 4a1 1 0 00-1 1v4a1 1 0 102 0V7a1 1 0 00-1-1zm0 8a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"/></svg>
+              <div>
+                <p class="text-sm font-medium">Clearing the TPM erases all encryption keys</p>
+                <p class="text-sm">You will lose access to all data in encrypted drives for which you do not have recovery keys. It will also break other features that depend on the TPM, such as authentication and certificates.</p>
+              </div>`;
+            contentEl.appendChild(warn);
+
+            const ack = document.createElement('label');
+            ack.className = 'flex items-center gap-2 mt-2 text-sm';
+            ack.innerHTML = `
+              <input type="checkbox" id="${checkboxId}" class="rounded border-gray-300">
+              <span>I understand the risk</span>`;
+            contentEl.appendChild(ack);
+          }
+
+          const btn = document.createElement('button');
+          btn.className = 'px-3 py-2 rounded bg-gray-900 text-white text-sm disabled:opacity-50';
+          btn.textContent = label;
+          btn.disabled = !!needsAck; // disabled until checkbox ticked
+          btn.addEventListener('click', () => {
+            // Simulate action outcome: if restart or shutdown, auto simulate
+            if (/ActionReboot|ActionShutdown|ActionEnable.*TPMViaFirmware|ActionClearTPMViaFirmware/.test(a.Action)) {
+              const outcome = /Shutdown/.test(a.Action) ? 'System will power off...' : 'System will reboot...';
+              inlineError(`Action started: ${label}. ${outcome}`);
+            } else {
+              inlineError(`Action executed: ${label}`);
+            }
+          });
+
+          if (needsAck) {
+            contentEl.addEventListener('change', (ev) => {
+              if (ev.target && ev.target.id === checkboxId) {
+                btn.disabled = !ev.target.checked;
+              }
+            });
+          }
+
+          // Ensure only one <details> stays open at a time
+          detailsEl.addEventListener('toggle', () => {
+            if (detailsEl.open) {
+              const openItems = solutionsEl.querySelectorAll('details.accordion-item[open]');
+              openItems.forEach(d => { if (d !== detailsEl) d.open = false; });
+            }
+          });
+
+          detailsEl.appendChild(summaryEl);
+          detailsEl.appendChild(contentEl);
+          contentEl.appendChild(btn);
+          solutionsEl.appendChild(detailsEl);
+        });
+      }
+
+      // Action codes list (all actions for this error kind)
+      const actionCodes = relatedActions.map(a => a.Action).filter(Boolean);
+      const uniqueCodes = [...new Set(actionCodes)];
+      // Reset and rebuild technical details
+      techDetailsEl.textContent = '';
+      const header = document.createElement('div');
+      header.className = 'text-sm';
+      header.textContent = `Error: ${kind}. Actions available: ${actionableList.length}.`;
+      techDetailsEl.appendChild(header);
+
+      const list = document.createElement('ul');
+      list.className = 'mt-2 list-disc pl-5';
+      uniqueCodes.forEach(code => {
+        const li = document.createElement('li');
+        li.textContent = code;
+        list.appendChild(li);
+      });
+      techDetailsEl.appendChild(list);
+
+      // Show vendor value after the action list
+      const vendorLine = document.createElement('div');
+      vendorLine.className = 'mt-2 text-sm';
+      vendorLine.textContent = `Vendor: ${currentVendor}`;
+      techDetailsEl.appendChild(vendorLine);
+    }
+
+    function inlineError(message) {
+      // Show inline notification under header (as per design cue)
+      const notice = document.createElement('div');
+      notice.className = 'mt-2 p-3 rounded border bg-red-50 border-red-200 text-sm';
+      notice.textContent = message;
+      document.getElementById('errorSummary').appendChild(notice);
+      setTimeout(() => notice.remove(), 3000);
+    }
+
+    errorKindEl.addEventListener('change', render);
+    if (vendorEl) {
+      vendorEl.value = currentVendor;
+      vendorEl.addEventListener('change', () => {
+        currentVendor = vendorEl.value;
+        render();
+      });
+    }
+
+    loadCSVs();
+  </script>
+</body>
+</html>
