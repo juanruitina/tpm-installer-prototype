@@ -17,7 +17,7 @@
     </header>
 
     <!-- Controls -->
-    <section class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
       <div>
         <label for="errorKind" class="block text-sm font-medium mb-1">Error type</label>
         <select id="errorKind" class="w-full rounded border-gray-300"></select>
@@ -30,6 +30,12 @@
           <option value="HP">HP</option>
           <option value="Other">Other</option>
         </select>
+      </div>
+      <div class="flex items-end">
+        <label class="inline-flex items-center gap-2 text-sm mb-1">
+          <input type="checkbox" id="keepOpen" class="rounded border-gray-300">
+          <span>Keep all solutions open</span>
+        </label>
       </div>
     </section>
 
@@ -80,6 +86,14 @@
     }
 
     let currentVendor = getVendorFromURL();
+    // Keep-open parameter from URL (?keepOpen=1)
+    function getKeepOpenFromURL() {
+      try {
+        const params = new URLSearchParams(location.search);
+        return params.get('keepOpen') === '1';
+      } catch (_) {}
+      return false;
+    }
     // Load CSVs from files (no inline fallback)
     let errors = [];
     let actions = [];
@@ -126,6 +140,8 @@
 
     const errorKindEl = document.getElementById('errorKind');
     const vendorEl = document.getElementById('vendor');
+    const keepOpenEl = document.getElementById('keepOpen');
+    let keepAllOpen = getKeepOpenFromURL();
     const errorTitleEl = document.getElementById('errorTitle');
     const errorDescEl = document.getElementById('errorDescription');
     const helperTextEl = document.getElementById('helperText');
@@ -259,9 +275,14 @@
             });
           }
 
-          // Ensure only one <details> stays open at a time
+          // Ensure only one <details> stays open unless keep-all is enabled.
+          // If keep-all is enabled and one opens, open all immediately.
           detailsEl.addEventListener('toggle', () => {
-            if (detailsEl.open) {
+            if (!detailsEl.open) return;
+            if (keepAllOpen) {
+              const items = solutionsEl.querySelectorAll('details.accordion-item');
+              items.forEach(d => d.open = true);
+            } else {
               const openItems = solutionsEl.querySelectorAll('details.accordion-item[open]');
               openItems.forEach(d => { if (d !== detailsEl) d.open = false; });
             }
@@ -315,6 +336,27 @@
       vendorEl.addEventListener('change', () => {
         currentVendor = vendorEl.value;
         render();
+      });
+    }
+
+    if (keepOpenEl) {
+      keepOpenEl.checked = keepAllOpen;
+      keepOpenEl.addEventListener('change', () => {
+        keepAllOpen = keepOpenEl.checked;
+        if (keepAllOpen) {
+          // When enabling keep-all, open all current items immediately
+          const items = solutionsEl.querySelectorAll('details.accordion-item');
+          items.forEach(d => d.open = true);
+          // Update URL with keepOpen=1
+          const url = new URL(location.href);
+          url.searchParams.set('keepOpen', '1');
+          history.replaceState(null, '', url.toString());
+        } else {
+          // Remove param when disabling
+          const url = new URL(location.href);
+          url.searchParams.delete('keepOpen');
+          history.replaceState(null, '', url.toString());
+        }
       });
     }
 
