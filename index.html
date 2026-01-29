@@ -288,6 +288,7 @@
           const caveats = a['Action caveats'];
           const label = a['Action label'] || 'Proceed';
           const isDestructive = /Yes/i.test(a.Destructive) || /Clear TPM/i.test(a['Action name'] || '') || /Clear TPM/i.test(description);
+          const isTPMClear = /Clear TPM/i.test(a['Action name'] || '') || /Clear TPM/i.test(description);
 
           const detailsEl = document.createElement('details');
           detailsEl.className = 'accordion-item';
@@ -317,12 +318,14 @@
           if (needsAck) {
             const warn = document.createElement('div');
             warn.className = 'flex items-start gap-3 bg-amber-50 border border-amber-200 rounded p-3';
-            warn.innerHTML = `
-              <svg class="warn-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a1 1 0 01.894.553l7 14A1 1 0 0117 18H3a1 1 0 01-.894-1.447l7-14A1 1 0 0110 2zm0 4a1 1 0 00-1 1v4a1 1 0 102 0V7a1 1 0 00-1-1zm0 8a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"/></svg>
-              <div>
-                <p class="font-medium">Clearing the TPM erases all encryption keys</p>
-                <p>You will lose access to all data in encrypted drives for which you do not have recovery keys. It will also break other features that depend on the TPM, such as authentication and certificates.</p>
-              </div>`;
+            const warnIcon = `<svg class="warn-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a1 1 0 01.894.553l7 14A1 1 0 0117 18H3a1 1 0 01-.894-1.447l7-14A1 1 0 0110 2zm0 4a1 1 0 00-1 1v4a1 1 0 102 0V7a1 1 0 00-1-1zm0 8a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"/></svg>`;
+            const tpmTitle = 'Clearing the TPM erases all encryption keys';
+            const tpmBody = 'You will lose access to all data in encrypted drives for which you do not have recovery keys. It will also break other features that depend on the TPM, such as authentication and certificates.';
+            const genericTitle = 'This action changes security settings';
+            const genericBody = 'Modifying firmware settings can affect encryption, authentication, and boot security. Some changes might not be easily reversible. Make sure you have recovery keys or guidance from IT support.';
+            const title = isTPMClear ? tpmTitle : genericTitle;
+            const body = isTPMClear ? tpmBody : genericBody;
+            warn.innerHTML = `${warnIcon}<div><p class="font-medium">${title}</p><p>${body}</p></div>`;
             contentEl.appendChild(warn);
 
             const ack = document.createElement('label');
