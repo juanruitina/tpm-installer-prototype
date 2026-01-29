@@ -116,7 +116,7 @@
                   <span>Technical details</span>
                 </summary>
                 <div id="techDetails">
-                  <div class="tech-inner">Data sourced from `prompt/errors.csv` and `prompt/actions.csv`.</div>
+                  <div class="tech-inner">Data sourced from `data/errors.csv` and `data/actions.csv`.</div>
                 </div>
               </details>
             </section>
@@ -191,8 +191,8 @@
     async function loadCSVs() {
       try {
         const [errorsText, actionsText] = await Promise.all([
-          fetch('prompt/errors.csv', { cache: 'no-store' }).then(r => { if (!r.ok) throw new Error('errors.csv'); return r.text(); }),
-          fetch('prompt/actions.csv', { cache: 'no-store' }).then(r => { if (!r.ok) throw new Error('actions.csv'); return r.text(); }),
+          fetch('data/errors.csv', { cache: 'no-store' }).then(r => { if (!r.ok) throw new Error('errors.csv'); return r.text(); }),
+          fetch('data/actions.csv', { cache: 'no-store' }).then(r => { if (!r.ok) throw new Error('actions.csv'); return r.text(); }),
         ]);
         errors = parseCSV(errorsText);
         actions = parseCSV(actionsText);

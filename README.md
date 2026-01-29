@@ -4,7 +4,7 @@ Prototype UI for exploring hardware-backed encryption availability and actions m
 
 ## Overview
 - UI: `index.html` (simple static page).
-- Data: `prompt/errors.csv` and `prompt/actions.csv`.
+- Data: `data/errors.csv` and `data/actions.csv`.
 
 ## CSV format
 - The app expects comma-separated values (CSV), not TSV. The built-in `parseCSV` function splits headers on commas and treats `"` as a quote toggle.
@@ -22,4 +22,4 @@ python3 -m http.server 8000
 - `?vendor=Dell|Lenovo|HP|Other` — preselects vendor (default: Other).
 - `?keepOpen=1` — open all solution details by default.
 
-3. Edit data in `prompt/errors.csv` and `prompt/actions.csv`; the UI reads them on load.
+3. Edit data in `data/errors.csv` and `data/actions.csv`; the UI reads them on load.
